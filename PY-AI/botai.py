@@ -39,33 +39,33 @@ async def on_message(message):
         query = message.content[3:]  # Remove the 'p!' prefix
 
         channel = bot.author.voice.channel
-    voice_client = await channel.connect()
+        voice_client = await channel.connect()
 
-    # Download and play the audio
-    ydl_opts = {
-        'format': 'bestaudio/best',
-        'postprocessors': [{
-            'key': 'FFmpegExtractAudio',
-            'preferredcodec': 'mp3',
-            'preferredquality': '192',
-        }],
-    }
+        # Download and play the audio
+        ydl_opts = {
+            'format': 'bestaudio/best',
+            'postprocessors': [{
+                'key': 'FFmpegExtractAudio',
+                'preferredcodec': 'mp3',
+                'preferredquality': '192',
+            }],
+        }
+        
+        try:
+            ydl = YoutubeDL(params=ydl_opts)
+            info = ydl.extract_info(url=query,download=False)
+            url2 = info['formats'][0]['url']
+            source = await discord.FFmpegOpusAudio.from_probe(url2, method='fallback')
+            voice_client.play(source)
+            await bot.send('Playing: ' + info['title'])
+            while voice_client.is_playing():
+                await asyncio.sleep(1)
 
-    try:
-        ydl = YoutubeDL()
-        info = ydl.extract_info(url=url,download=False)
-        url2 = info['formats'][0]['url']
-        source = await discord.FFmpegOpusAudio.from_probe(url2, method='fallback')
-        voice_client.play(source)
-        await ctx.send('Playing: ' + info['title'])
-        while voice_client.is_playing():
-            await asyncio.sleep(1)
+        except Exception as e:
+            await bot.send(e)
 
-    except Exception as e:
-        await ctx.send(e)
-
-    # Disconnect from the voice channel
-    await voice_client.disconnect()
+        # Disconnect from the voice channel
+        await voice_client.disconnect()
 
     await bot.process_commands(message)
 
