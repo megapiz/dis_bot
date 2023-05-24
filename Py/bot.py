@@ -49,5 +49,5 @@ async def play(ctx, url):
     # Disconnect from the voice channel
     await voice_client.disconnect()
 
-# Run the bot with your Discord bot token
+# Run the bot with your Discord bot token and api
 bot.run('')
