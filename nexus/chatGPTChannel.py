@@ -5,7 +5,7 @@ from profiles import Bot
 openai.api_key = OPENAI_API_KEY
 
 class ChatGPTChannel():
-    allowedRole = 111176414643488768 #change it for your own role
+    allowedRole = 1111764146434887680 #change it for your own role
 
     @staticmethod
     def isUserAllowed(ctx)->bool:

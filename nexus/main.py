@@ -109,6 +109,8 @@ async def chatgpt(ctx):
 
 @bot.command()
 async def start(ctx):
+    if ctx.channel.id != 1110957679595245678: #change it for your own server
+        return
     category = discord.utils.get(ctx.guild.categories, id=Channels.chatGPTallowdCategoryID)
     overwrites = {
         ctx.guild.default_role: discord.PermissionOverwrite(read_messages=False),
@@ -118,7 +120,7 @@ async def start(ctx):
 
     welcome_message = f"Welcome to the ChatGPT channel, {ctx.author.mention}! You can start chatting with ChatGPT here."
     await channel.send(welcome_message)
-
+    await ctx.message.delete()
 
 @bot.command()
 async def stop(ctx):
